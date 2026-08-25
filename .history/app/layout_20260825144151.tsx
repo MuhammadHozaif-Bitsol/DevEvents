@@ -36,10 +36,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <body className="min-h-full flex flex-col">
-        <div className="absolute inset-0 top-0 z-[-1] min-h-screen">
+        <div className="absolute">
           <LightRays></LightRays>
         </div>
-        <main>{children}</main>
+        {children}
       </body>
     </html>
   );

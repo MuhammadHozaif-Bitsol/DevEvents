@@ -39,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="absolute inset-0 top-0 z-[-1] min-h-screen">
           <LightRays></LightRays>
         </div>
-        <main>{children}</main>
+        {children}
       </body>
     </html>
   );
