@@ -9,9 +9,7 @@ const page = () => {
         Hackathons, Meetups, and Conferences, All in One Place
       </p>
 
-      <ExploreBtn></ExploreBtn>
-      <h3>Featured Events</h3>
-      <ul className="events"></ul>
+      <ExploreBtn />
     </>
   );
 };

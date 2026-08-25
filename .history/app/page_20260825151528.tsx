@@ -11,7 +11,6 @@ const page = () => {
 
       <ExploreBtn></ExploreBtn>
       <h3>Featured Events</h3>
-      <ul className="events"></ul>
     </>
   );
 };
