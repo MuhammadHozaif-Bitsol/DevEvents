@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactCompiler: true,
 
+  // Add this experimental block right here:
   experimental: {
     cacheComponents: true,
   },

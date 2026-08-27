@@ -1,11 +1,10 @@
 import ExploreBtn from "@/components/ExploreBtn";
 import EventCard from "@/components/EventCard";
-import { IEvent } from "@/database";
+import events from "@/lib/constants";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const page = async () => {
   const response = await fetch(`${BASE_URL}/api/events`);
-  const { events } = await response.json();
 
   return (
     <>
@@ -24,7 +23,7 @@ const page = async () => {
         <ul className="events">
           {events &&
             events.length > 0 &&
-            events.map((event: IEvent) => (
+            events.map((event) => (
               <li key={event.title} className="list-none">
                 <EventCard {...event} />
               </li>
