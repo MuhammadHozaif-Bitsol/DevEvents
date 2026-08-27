@@ -1,13 +1,15 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import { IEvent } from "@/database";
-import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
+// Make sure getEventBySlug is exported from this file!
+import {
+  getSimilarEventsBySlug,
+  getEventBySlug,
+} from "@/lib/actions/event.actions";
 import Image from "next/image";
 import BookEvent from "./BookEvent";
 import EventCard from "@/components/EventCard";
 import { cacheLife } from "next/cache";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const EventDetailItem = ({
   icon,
@@ -50,29 +52,15 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
   cacheLife("hours");
   const slug = await params;
 
-  let event;
-  try {
-    const request = await fetch(`${BASE_URL}/api/events/${slug}`, {
-      next: { revalidate: 60 },
-    });
+  // 1. Fetch main event directly from the database action instead of fetch()
+  const rawEvent = await getEventBySlug(slug);
 
-    if (!request.ok) {
-      if (request.status === 404) {
-        return notFound();
-      }
-      throw new Error(`Failed to fetch event: ${request.statusText}`);
-    }
-
-    const response = await request.json();
-    event = response.event;
-
-    if (!event) {
-      return notFound();
-    }
-  } catch (error) {
-    console.error("Error fetching event:", error);
+  if (!rawEvent) {
     return notFound();
   }
+
+  // Serialize the main event
+  const event = JSON.parse(JSON.stringify(rawEvent));
 
   const {
     description,
@@ -92,8 +80,8 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
 
   const bookings = 10;
 
+  // 2. Fetch and serialize similar events
   const rawSimilarEvents: IEvent[] = await getSimilarEventsBySlug(slug);
-
   const similarEvents = JSON.parse(JSON.stringify(rawSimilarEvents));
 
   return (
