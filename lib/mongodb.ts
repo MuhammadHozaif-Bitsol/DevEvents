@@ -8,7 +8,6 @@ type MongooseCache = {
 
 // Extend the global object to include our mongoose cache
 declare global {
-  // eslint-disable-next-line no-var
   var mongoose: MongooseCache | undefined;
 }
 
@@ -21,11 +20,6 @@ if (!global.mongoose) {
   global.mongoose = cached;
 }
 
-/**
- * Establishes a connection to MongoDB using Mongoose.
- * Caches the connection to prevent multiple connections during development hot reloads.
- * @returns Promise resolving to the Mongoose instance
- */
 async function connectDB(): Promise<typeof mongoose> {
   // Return existing connection if available
   if (cached.conn) {

@@ -1,7 +1,17 @@
 import ExploreBtn from "@/components/ExploreBtn";
 import EventCard from "@/components/EventCard";
-import events from "@/lib/constants";
-const page = () => {
+import { IEvent } from "@/database";
+import { cacheLife } from "next/cache";
+import { getAllEvents } from "@/lib/actions/event.actions";
+
+const page = async () => {
+  "use cache";
+  cacheLife("hours");
+
+  const rawEvents = await getAllEvents();
+
+  const events = JSON.parse(JSON.stringify(rawEvents));
+
   return (
     <>
       <h1 className="text-center">
@@ -19,7 +29,7 @@ const page = () => {
         <ul className="events">
           {events &&
             events.length > 0 &&
-            events.map((event) => (
+            events.map((event: IEvent) => (
               <li key={event.title} className="list-none">
                 <EventCard {...event} />
               </li>
