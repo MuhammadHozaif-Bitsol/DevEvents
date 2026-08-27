@@ -92,7 +92,9 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
 
   const bookings = 10;
 
-  const similarEvents: IEvent[] = await getSimilarEventsBySlug(slug);
+  const rawSimilarEvents: IEvent[] = await getSimilarEventsBySlug(slug);
+
+  const similarEvents = JSON.parse(JSON.stringify(rawSimilarEvents));
 
   return (
     <section id="event">
@@ -157,7 +159,8 @@ const EventDetails = async ({ params }: { params: Promise<string> }) => {
               <p className="text-sm">Be the first to book your spot!</p>
             )}
 
-            <BookEvent eventId={event._id} slug={event.slug} />
+            {/* Ensure event._id is passed as a string */}
+            <BookEvent eventId={String(event._id)} slug={event.slug} />
           </div>
         </aside>
       </div>
